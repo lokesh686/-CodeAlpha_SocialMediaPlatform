@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>ConnectAlpha — Social Media</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="css/style.css"/>
+</head>
+<body>
+  <!-- AUTH SCREENS -->
+  <div id="auth-screen">
+    <div class="auth-container">
+      <div class="auth-brand">ConnectAlpha</div>
+      <div class="auth-tabs">
+        <button class="tab-btn active" onclick="switchTab('login')">Login</button>
+        <button class="tab-btn" onclick="switchTab('register')">Register</button>
+      </div>
+      <!-- Login -->
+      <div id="tab-login" class="tab-content active">
+        <input type="email" id="login-email" placeholder="Email"/>
+        <input type="password" id="login-password" placeholder="Password"/>
+        <div class="auth-msg" id="login-msg"></div>
+        <button class="btn-primary" onclick="login()">Sign In</button>
+      </div>
+      <!-- Register -->
+      <div id="tab-register" class="tab-content">
+        <input type="text" id="reg-username" placeholder="Username (e.g. lokesh_dev)"/>
+        <input type="text" id="reg-name" placeholder="Full Name"/>
+        <input type="email" id="reg-email" placeholder="Email"/>
+        <input type="password" id="reg-password" placeholder="Password"/>
+        <div class="auth-msg" id="reg-msg"></div>
+        <button class="btn-primary" onclick="register()">Create Account</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- MAIN APP -->
+  <div id="app" style="display:none">
+    <!-- SIDEBAR -->
+    <aside class="sidebar">
+      <div class="sidebar-brand">ConnectAlpha</div>
+      <nav class="sidebar-nav">
+        <button class="nav-item active" onclick="showView('feed')" id="nav-feed">🏠 Feed</button>
+        <button class="nav-item" onclick="showView('explore')" id="nav-explore">🔍 Explore</button>
+        <button class="nav-item" onclick="showView('create')" id="nav-create">➕ Create</button>
+        <button class="nav-item" onclick="showView('profile')" id="nav-profile">👤 Profile</button>
+        <button class="nav-item" onclick="logoutUser()">🚪 Logout</button>
+      </nav>
+      <div class="sidebar-user" id="sidebar-user"></div>
+    </aside>
+
+    <!-- MAIN CONTENT -->
+    <main class="main-content">
+      <!-- FEED -->
+      <div id="view-feed" class="view active">
+        <div class="view-header"><h2>Your Feed</h2></div>
+        <div id="feed-posts" class="posts-feed">
+          <div class="loading">Loading feed...</div>
+        </div>
+      </div>
+
+      <!-- EXPLORE -->
+      <div id="view-explore" class="view">
+        <div class="view-header">
+          <h2>Explore</h2>
+          <div class="search-box">
+            <input type="text" id="search-q" placeholder="Search users..." oninput="debounceSearch()"/>
+          </div>
+        </div>
+        <div id="search-results" style="display:none" class="user-results"></div>
+        <div id="explore-posts" class="explore-grid"></div>
+      </div>
+
+      <!-- CREATE POST -->
+      <div id="view-create" class="view">
+        <div class="view-header"><h2>Create Post</h2></div>
+        <div class="create-card">
+          <textarea id="post-caption" placeholder="What's on your mind?" rows="4"></textarea>
+          <input type="text" id="post-image" placeholder="Image URL (optional)"/>
+          <input type="text" id="post-tags" placeholder="Tags (comma-separated, e.g. tech, coding)"/>
+          <label class="toggle-label">
+            <input type="checkbox" id="post-public" checked/>
+            Public post
+          </label>
+          <div id="post-preview" class="post-preview" style="display:none"></div>
+          <div style="display:flex;gap:1rem;margin-top:1rem">
+            <button class="btn-outline" onclick="previewPost()">Preview</button>
+            <button class="btn-primary" onclick="createPost()">Publish Post</button>
+          </div>
+          <div class="auth-msg" id="create-msg"></div>
+        </div>
+      </div>
+
+      <!-- PROFILE -->
+      <div id="view-profile" class="view">
+        <div id="profile-content"><div class="loading">Loading...</div></div>
+      </div>
+
+      <!-- USER PROFILE (other users) -->
+      <div id="view-user-profile" class="view">
+        <div id="user-profile-content"><div class="loading">Loading...</div></div>
+      </div>
+    </main>
+
+    <!-- RIGHT PANEL -->
+    <aside class="right-panel">
+      <div class="panel-section">
+        <h3>Suggested Users</h3>
+        <div id="suggestions-list"></div>
+      </div>
+    </aside>
+  </div>
+
+  <!-- TOAST -->
+  <div class="toast" id="toast"></div>
+
+  <script src="js/app.js"></script>
+</body>
+</html>
